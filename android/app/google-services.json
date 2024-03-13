@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "458942778783",
+    "project_id": "dhiwise-ecom",
+    "storage_bucket": "dhiwise-ecom.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:458942778783:android:98a264691298feaff081aa",
+        "android_client_info": {
+          "package_name": "com.anubratsapplication.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEShojaB3m2GGqjcIY5DxDdVupjdxKatE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
