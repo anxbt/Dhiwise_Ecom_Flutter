@@ -10,6 +10,8 @@ class ImageConstant {
 
   static String imgFacebookIcon = '$imagePath/img_facebook_icon.svg';
 
+  static String imgGithubIcon = '$imagePath/github1.svg';
+
   // Product Detail images
   static String imgMoreIcon = '$imagePath/img_more_icon.svg';
 

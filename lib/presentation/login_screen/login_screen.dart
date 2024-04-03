@@ -5,6 +5,13 @@ import 'package:anubrat_s_application2/widgets/custom_elevated_button.dart';
 import 'package:anubrat_s_application2/widgets/custom_outlined_button.dart';
 import 'package:flutter/material.dart';
 import 'package:anubrat_s_application2/core/app_export.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../services/Shared_Preferences.dart';
+import 'forgot_password.dart';
+import "../splash_screen/splash_screen.dart";
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
 // ignore_for_file: must_be_immutable
 class LoginScreen extends StatelessWidget {
@@ -25,7 +32,10 @@ class LoginScreen extends StatelessWidget {
                 width: SizeUtils.width,
                 child: SingleChildScrollView(
                     padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom),
+                        bottom: MediaQuery
+                            .of(context)
+                            .viewInsets
+                            .bottom),
                     child: Form(
                         key: _formKey,
                         child: Container(
@@ -47,7 +57,7 @@ class LoginScreen extends StatelessWidget {
                                           height: 24.adaptSize,
                                           width: 24.adaptSize)),
                                   prefixConstraints:
-                                      BoxConstraints(maxHeight: 48.v),
+                                  BoxConstraints(maxHeight: 48.v),
                                   contentPadding: EdgeInsets.only(
                                       top: 15.v, right: 30.h, bottom: 15.v)),
                               SizedBox(height: 10.v),
@@ -64,24 +74,41 @@ class LoginScreen extends StatelessWidget {
                                           height: 24.adaptSize,
                                           width: 24.adaptSize)),
                                   prefixConstraints:
-                                      BoxConstraints(maxHeight: 48.v),
+                                  BoxConstraints(maxHeight: 48.v),
                                   obscureText: true,
                                   contentPadding: EdgeInsets.only(
                                       top: 15.v, right: 30.h, bottom: 15.v)),
                               SizedBox(height: 16.v),
-                              CustomElevatedButton(text: "Sign In"),
+                              CustomElevatedButton(
+                                text: "Sign In",
+                                onPressed: () {
+                                  onTapSignIn(context);
+                                },
+                              ),
                               SizedBox(height: 18.v),
                               _buildOrLine(context),
                               SizedBox(height: 16.v),
                               _buildSocialAuthentication(context),
                               SizedBox(height: 17.v),
-                              Text("Forgot Password?",
-                                  style: CustomTextStyles.labelLargePrimary),
+
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                      return forgotpassword.forgotPassword();
+                                    },
+                                    ),
+                                  );
+                                },
+                                  child: Text("Forgot Password?",
+                                    style: CustomTextStyles.labelLargePrimary
+                                   ),
+                              ),
                               SizedBox(height: 7.v),
                               GestureDetector(
                                   onTap: () {
-                                    onTapTxtDonthaveanaccount(context);
-                                  },
+                                     onTapTxtDonthaveanaccount(context);},
+
                                   child: RichText(
                                       text: TextSpan(children: [
                                         TextSpan(
@@ -142,13 +169,13 @@ class LoginScreen extends StatelessWidget {
                   width: 24.adaptSize))),
       SizedBox(height: 8.v),
       CustomOutlinedButton(
-          text: "Login with facebook",
+          text: "Login with Github",
           leftIcon: Container(
             margin: EdgeInsets.only(right: 30.h),
             child: CustomImageView(
-                imagePath: ImageConstant.imgFacebookIcon,
+                imagePath: ImageConstant.imgGithubIcon,
                 height: 24.adaptSize,
-                width: 24.adaptSize),
+                width: 20.adaptSize),
           ))
     ]);
   }
@@ -157,4 +184,54 @@ class LoginScreen extends StatelessWidget {
   onTapTxtDonthaveanaccount(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.registerScreen);
   }
+
+  onTapSignIn(BuildContext context) async {
+    print("hy");
+
+
+    var sharedPref =await SharedPreferences.getInstance();
+    sharedPref.setBool(SplashScreen.KEYLOGIN, true);
+
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      // Show error message for empty fields
+      return;
+    }
+    try {
+      // Create user with email and password
+      final UserCredential userCredential = await _auth
+          .signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // Save login status in Shared Preferences
+      await SharedPref.saveLoginStatus(true);
+
+      // Handle successful registration (e.g., navigate to dashboard)
+      Navigator.pushNamed(context, AppRoutes.dashboardContainerScreen);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('$e.code'),
+          ),
+        );
+      } else if (e.code == 'email-already-in-use') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('The account already exists for that email.'),
+          ),
+        );
+        Navigator.pushNamed(context, AppRoutes.loginScreen);
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
 }
