@@ -448,6 +448,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.27.7"
+<<<<<<< HEAD
   shared_preferences:
     dependency: "direct main"
     description:
@@ -504,6 +505,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.2"
+=======
+>>>>>>> b570dcf10567e47e689d2e7d7fcae8f838b34fdc
   sky_engine:
     dependency: transitive
     description: flutter
