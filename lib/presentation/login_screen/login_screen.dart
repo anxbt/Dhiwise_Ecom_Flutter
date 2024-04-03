@@ -190,7 +190,7 @@ class LoginScreen extends StatelessWidget {
 
 
     var sharedPref =await SharedPreferences.getInstance();
-    sharedPref.setBool(SplashScreen.KEYLOGIN, true);
+    sharedPref.setBool(SplashScreen.KEYLOGIN, true);`
 
     String email = emailController.text.trim();
     String password = passwordController.text.trim();

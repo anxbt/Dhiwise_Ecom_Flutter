@@ -50,6 +50,45 @@ After successful build, your application structure should look like this:
   dart format .
   ```
 
+## Getting Started
+
+Follow these steps to set up your Flutter project:
+
+1. **Clone this repository** to your local machine:
+
+```
+git clone <repository_url>
+```
+
+2. **Navigate into the project directory**:
+
+```
+cd <project_directory>
+```
+
+3. **Install dependencies**:
+
+```
+flutter pub get
+```
+
+4. **Run the app**:
+
+```
+flutter run
+```
+
+This command will build and run your Flutter app on a connected device or emulator.
+
+## Project Structure
+
+The Flutter project structure is as follows:
+
+- **`android/`**: Contains the Android-specific code for your app.
+- **`ios/`**: Contains the iOS-specific code for your app.
+- **`lib/`**: Contains the Dart code for your app.
+  - **`main.dart`**: Entry point for your Flutter app.
+
 ### How you can improve code readability?
 
 Resolve the errors and warnings that are shown in the application.
